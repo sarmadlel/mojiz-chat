@@ -20,7 +20,7 @@ def retrieval_answer(query):
     return result
 
 def main():
-    st.title("Data Pilot GPT :rocket: ")
+    st.title("Ask the book and it will answer (probably)")
 
     text_input = st.text_input("Ask your query...") 
     if st.button("Ask Query"):
