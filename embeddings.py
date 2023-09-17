@@ -19,20 +19,18 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 
+directory = 'data'
 
-def doc_preprocessing():
-    loader = DirectoryLoader(
-        'C:/Users/HF/Documents/Data Pilot/New Project/data',
-        glob='**/*.pdf',     # only the PDFs
-        show_progress=True
-    )
+def doc_preprocessing(directory):
+    loader = DirectoryLoader(directory)
     docs = loader.load()
     text_splitter = CharacterTextSplitter(
-        chunk_size=3000, 
-        chunk_overlap=200
+        chunk_size=1000, 
+        chunk_overlap=0
     )
     docs_split = text_splitter.split_documents(docs)
     return docs_split
+
 
 @st.cache_resource
 def embedding_db():
@@ -42,7 +40,7 @@ def embedding_db():
         api_key=PINECONE_API_KEY,
         environment=PINECONE_ENV
     )
-    docs_split = doc_preprocessing()
+    docs_split = doc_preprocessing(directory)
     doc_db = Pinecone.from_documents(
         docs_split, 
         embeddings, 
